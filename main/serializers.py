@@ -11,4 +11,5 @@ class EventsSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = 'name'
+        fields = '__all__'
+        read_only_fields = ('slug',)
