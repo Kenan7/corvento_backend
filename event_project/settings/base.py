@@ -28,6 +28,7 @@ LOCAL = [
 
 THIRD_PARTY = [
     'rest_framework',
+    'versatileimagefield',
 ]
 
 INSTALLED_APPS = BASE + LOCAL + THIRD_PARTY
