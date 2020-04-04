@@ -7,11 +7,14 @@ from rest_framework.generics import (
 )
 from main.models import Event, Category
 from main.serializers import EventsSerializer, CategorySerializer
+from rest_framework import filters
 
 
 class EventListCreateView(ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventsSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['author__first_name', 'title', 'desc', 'category__name']
 
 
 class EventDetailView(RetrieveAPIView):
@@ -35,6 +38,8 @@ class EventDestroyView(DestroyAPIView):
 class CategoryListCreateView(ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
 
 class CategoryDetailView(RetrieveAPIView):
