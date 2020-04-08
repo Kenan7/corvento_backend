@@ -3,7 +3,6 @@ from versatileimagefield.fields import VersatileImageField
 from django.conf import settings
 from main.utils import unique_slug_generator
 from django.db.models.signals import pre_save
-from django.dispatch import receiver
 
 User = settings.AUTH_USER_MODEL
 

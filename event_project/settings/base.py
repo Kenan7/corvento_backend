@@ -31,13 +31,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
-STATIC_ROOT = BASE_DIR / 'static_root'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'static'
+# STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_URL = '/static/'
 
 
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['35.157.172.14', '127.0.0.1']
 
 
 MIDDLEWARE = [
