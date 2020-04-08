@@ -2,7 +2,7 @@ from django.urls import path, include
 from main import views
 urlpatterns = [
     path(
-        'home',
+        'home/',
         views.EventListCreateView.as_view(), name='events_list_create'
     ),
     path(
@@ -20,7 +20,7 @@ urlpatterns = [
 
     # categories
     path(
-        'category',
+        'category/',
         views.CategoryListCreateView.as_view(), name='category_list_create'
     ),
     path(
