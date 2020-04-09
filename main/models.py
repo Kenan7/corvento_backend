@@ -1,13 +1,13 @@
 from django.db import models
 from versatileimagefield.fields import VersatileImageField
 from django.conf import settings
-from main.utils import unique_slug_generator
+from main.utils import unique_slug_generator, TimeStampedModel
 from django.db.models.signals import pre_save
 
 User = settings.AUTH_USER_MODEL
 
 
-class Event(models.Model):
+class Event(TimeStampedModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=128)
     desc = models.CharField(max_length=1024)
@@ -30,6 +30,7 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
     name = models.CharField(max_length=64)
+    icon = models.CharField(max_length=64, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self):

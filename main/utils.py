@@ -1,9 +1,18 @@
 from django.utils.text import slugify
 import string
 import random
+from django.db import models
+
+
+class TimeStampedModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
 
 # slug generator
-
 DONT_USE = ['create']
 
 
