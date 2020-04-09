@@ -5,7 +5,9 @@ migrations/
 .workspace.code-workspace
 media
 static
-
+sheets_api/credentials.json
+credentials.json:Zone.Identifier
+token.pickle
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
