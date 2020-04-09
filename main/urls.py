@@ -2,8 +2,12 @@ from django.urls import path, include
 from main import views
 urlpatterns = [
     path(
-        'home/',
-        views.EventListCreateView.as_view(), name='events_list_create'
+        'list/',
+        views.EventListView.as_view(), name='events_list'
+    ),
+    path(
+        'create/',
+        views.EventCreateView.as_view(), name='events_create'
     ),
     path(
         '<slug:slug>/detail/',
