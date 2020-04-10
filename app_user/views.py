@@ -9,7 +9,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, AllowAny
 
 from app_user.models import AppUser
-from app_user.serializers import AppUserSerializers, CustomRegisterSerializer, CustomUserDetailsSerializer
+from app_user.serializers import (
+    AppUserSerializers, CustomRegisterSerializer, AppUserDetailsSerializer
+)
 from dj_rest_auth.registration.views import RegisterView, ConfirmEmailView
 
 
@@ -22,7 +24,7 @@ class AppUserListAPIView(ListAPIView):
 class AppUserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = AppUser.objects.all()
     permission_classes = (IsAuthenticated,)
-    serializer_class = CustomUserDetailsSerializer
+    serializer_class = AppUserDetailsSerializer
     lookup_field = 'uuid'
 
 

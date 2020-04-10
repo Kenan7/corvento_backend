@@ -4,6 +4,7 @@ from django.db import models
 import uuid as uuid_lib
 # apps
 from main.utils import TimeStampedModel
+from django.utils import timezone
 
 
 class AppUserManager(UserManager):
@@ -17,6 +18,12 @@ class AppUserManager(UserManager):
     def create_user(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
+
+        # temp_notf = UserNotifications.objects.create(
+        #     title="test", data="whatever", date=timezone.now()
+        # )
+        # extra_fields.setdefault('notifications', temp_notf)
+
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email=None, password=None, **extra_fields):
@@ -52,6 +59,10 @@ class AppUser(AbstractUser, TimeStampedModel):
         upload_to="user_images", blank=True
     )
 
+    notifications = models.ForeignKey(
+        "UserNotifications", on_delete=models.CASCADE, null=True
+    )
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
@@ -62,3 +73,9 @@ class AppUser(AbstractUser, TimeStampedModel):
 
     def get_short_name(self):
         return self.first_name
+
+
+class UserNotifications(models.Model):
+    title = models.CharField(max_length=32)
+    data = models.CharField(max_length=200)
+    date = models.DateTimeField()

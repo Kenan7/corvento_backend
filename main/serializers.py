@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from main.models import Event, Category
-from app_user.serializers import CustomUserDetailsSerializer
+from app_user.serializers import AppUserDetailsSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -17,7 +17,7 @@ class EventCreateSerializer(serializers.ModelSerializer):
 
 
 class EventALLSerializer(serializers.ModelSerializer):
-    author = CustomUserDetailsSerializer()
+    author = AppUserDetailsSerializer()
     category = CategorySerializer()
 
     class Meta:

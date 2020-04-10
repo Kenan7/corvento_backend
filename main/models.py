@@ -16,7 +16,7 @@ class Event(TimeStampedModel):
         upload_to="event_images", blank=True
     )
     venue = models.CharField(max_length=120)
-
+    data = models.DateTimeField()
     slug = models.SlugField(unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

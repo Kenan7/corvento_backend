@@ -1,6 +1,6 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
-from app_user.models import AppUser
+from app_user.models import AppUser, UserNotifications
 
 
 class AppUserSerializers(serializers.ModelSerializer):
@@ -40,10 +40,18 @@ class CustomRegisterSerializer(RegisterSerializer):
         }
 
 
-class CustomUserDetailsSerializer(serializers.ModelSerializer):
+class UserNotificationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserNotifications
+        fields = '__all__'
+
+
+class AppUserDetailsSerializer(serializers.ModelSerializer):
+    notifications = UserNotificationsSerializer()
+
     class Meta:
         model = AppUser
         fields = [
-            'email', 'first_name', 'last_name', 'gender', 'uuid', 'image'
+            'email', 'first_name', 'last_name', 'gender', 'uuid', 'image', 'notifications'
         ]
         read_only_fields = ('email',)

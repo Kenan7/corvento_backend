@@ -2,7 +2,7 @@
 secrets.json
 migrations/
 .vscode/
-.workspace.code-workspace
+eventproject.code-workspace
 media
 static
 sheets_api/credentials.json
