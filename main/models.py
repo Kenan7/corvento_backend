@@ -7,6 +7,11 @@ from django.db.models.signals import pre_save
 User = settings.AUTH_USER_MODEL
 
 
+class EventManager(models.Manager):
+    def get_featured(self):
+        return super(EventManager, self).get_queryset().filter(featured=1)
+
+
 class Event(TimeStampedModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=128)
@@ -16,10 +21,17 @@ class Event(TimeStampedModel):
         upload_to="event_images", blank=True
     )
     venue = models.CharField(max_length=120)
-    data = models.DateTimeField()
+    date = models.DateTimeField()
+    event_url = models.URLField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
+    featured = models.BooleanField()
+    community = models.CharField(max_length=20, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+    objects = EventManager()
+
+    ordering = ['date']
 
     def __str__(self):
         return f"{self.author.first_name} - {self.title}"

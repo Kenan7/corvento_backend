@@ -6,6 +6,10 @@ urlpatterns = [
         '',
         views.CategoryListCreateView.as_view(), name='category_list_create'
     ),
+    # path(
+    #     '<int:id>/events/',
+    #     views.EventsByCategory.as_view(), name='events_by_category'
+    # ),
     path(
         '<slug:slug>/detail/',
         views.CategoryDetailView.as_view(), name='category_detail'

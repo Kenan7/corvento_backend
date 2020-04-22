@@ -6,6 +6,10 @@ urlpatterns = [
         views.EventListView.as_view(), name='events_list'
     ),
     path(
+        'featured/',
+        views.EventFeaturedListView.as_view(), name='events_featured'
+    ),
+    path(
         'create/',
         views.EventCreateView.as_view(), name='events_create'
     ),

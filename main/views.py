@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import (
     ListCreateAPIView,
     CreateAPIView,
@@ -16,8 +17,22 @@ from rest_framework import filters
 class EventListView(ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventALLSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['author__first_name', 'title', 'desc', 'category__name']
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = [
+        'author__first_name', 'title', 'desc',
+    ]
+    filterset_fields = ['featured', 'category__id']
+
+
+class EventFeaturedListView(ListAPIView):
+    queryset = Event.objects.get_featured()
+    serializer_class = EventALLSerializer
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = [
+        'author__first_name', 'title',
+        'desc', 'category__name'
+    ]
+    filterset_fields = ['featured']
 
 
 class EventCreateView(CreateAPIView):
@@ -41,6 +56,17 @@ class EventDestroyView(DestroyAPIView):
     lookup_field = 'slug'
     serializer_class = EventCreateSerializer
     queryset = Event.objects.all()
+
+
+# couldn't implement
+# class EventsByCategory(ListAPIView):
+#     lookup_field = 'id'
+#     queryset = Category.event_set
+#     serializer_class = EventALLSerializer
+
+#                                             #
+#              Category Views                 #
+#                                             #
 
 
 class CategoryListCreateView(ListCreateAPIView):

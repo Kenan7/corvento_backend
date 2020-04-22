@@ -23,6 +23,16 @@ class EventALLSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = [
-            'title', 'desc', 'image',
-            'venue', 'slug', 'category', 'author'
+            'title',
+            'desc',
+            'image',
+            'date',
+            'venue',
+            'slug',
+            'category',
+            'author',
+            'featured',
+            'event_url',
+            'firebase_token',
+            'community'
         ]
