@@ -4,12 +4,15 @@ from pathlib import Path
 AUTH_USER_MODEL = "app_user.AppUser"
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
 }
 
 LOCAL = [
     'main.apps.MainConfig',
     'app_user.apps.AppUserConfig',
+    'sheets_api.apps.SheetsApiConfig',
 ]
 
 THIRD_PARTY = [
@@ -144,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'Asia/Baku'
+TIME_ZONE = 'Europe/Istanbul'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
