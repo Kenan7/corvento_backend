@@ -8,6 +8,10 @@ static
 sheets_api/credentials.json
 credentials.json:Zone.Identifier
 token.pickle
+secret.json
+*.Identifier
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
