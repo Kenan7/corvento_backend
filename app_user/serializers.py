@@ -8,7 +8,8 @@ class AppUserSerializers(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = [
-            'email', 'first_name', 'last_name', 'uuid', 'gender', 'image',
+            'email', 'first_name', 'last_name',
+            'uuid', 'gender', 'image', 'firebase_token'
         ]
 
 
@@ -26,6 +27,7 @@ class CustomRegisterSerializer(RegisterSerializer):
     last_name = serializers.CharField(required=True)
     gender = serializers.CharField(required=True)
     image = serializers.ImageField(required=False)
+    firebase_token = serializers.CharField(required=False)
 
     def get_cleaned_data(self):
         super(CustomRegisterSerializer, self).get_cleaned_data()
@@ -37,6 +39,7 @@ class CustomRegisterSerializer(RegisterSerializer):
             'last_name': self.validated_data.get('last_name', ''),
             'gender': self.validated_data.get('gender', ''),
             'image': self.validated_data.get('image', ''),
+            'firebase_token': self.validated_data.get('firebase_token', ''),
         }
 
 
@@ -52,6 +55,7 @@ class AppUserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = [
-            'email', 'first_name', 'last_name', 'gender', 'uuid', 'image', 'notifications'
+            'email', 'first_name', 'last_name',
+            'gender', 'uuid', 'image', 'firebase_token', 'notifications'
         ]
         read_only_fields = ('email',)

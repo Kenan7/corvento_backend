@@ -20,6 +20,7 @@ class AppUserManager(UserManager):
         extra_fields.setdefault('is_superuser', False)
 
         # temp_notf = UserNotifications.objects.create(
+        # temp_notf = UserNotifications.objects.create(
         #     title="test", data="whatever", date=timezone.now()
         # )
         # extra_fields.setdefault('notifications', temp_notf)
@@ -60,8 +61,11 @@ class AppUser(AbstractUser, TimeStampedModel):
     )
 
     notifications = models.ForeignKey(
-        "UserNotifications", on_delete=models.CASCADE, null=True
+        "UserNotifications", on_delete=models.CASCADE, null=True, blank=True
     )
+    community = models.CharField(max_length=20, null=True, blank=True)
+
+    firebase_token = models.CharField(max_length=64, null=True, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
