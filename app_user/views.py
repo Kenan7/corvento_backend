@@ -1,6 +1,8 @@
 from rest_framework.generics import (
     ListAPIView,
     CreateAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
 
@@ -20,8 +22,22 @@ class AppUserCreateAPIView(CreateAPIView):
     serializer_class = AppUserSerializers
 
 
+class AppUserRetrieveAPIView(RetrieveAPIView):
+    queryset = AppUser.objects.all()
+    # permission_classes = (IsAuthenticated,)
+    serializer_class = AppUserDetailsSerializer
+    lookup_field = 'pk'
+
+
+class AppUserUpdateAPIView(UpdateAPIView):
+    queryset = AppUser.objects.all()
+    # permission_classes = (IsAuthenticated,)
+    serializer_class = AppUserDetailsSerializer
+    lookup_field = 'pk'
+
+
 class AppUserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = AppUser.objects.all()
     # permission_classes = (IsAuthenticated,)
     serializer_class = AppUserDetailsSerializer
-    lookup_field = 'uuid'
+    lookup_field = 'pk'

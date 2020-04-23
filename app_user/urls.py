@@ -15,9 +15,14 @@ urlpatterns = [
         name='app_user_create'
     ),
     path(
-        '<uuid:uuid>/',
-        views.AppUserRetrieveUpdateDestroyAPIView.as_view(),
-        name='app_user_rud'
+        '<int:pk>/detail/',
+        views.AppUserRetrieveAPIView.as_view(),
+        name='app_user_detail'
+    ),
+    path(
+        '<int:pk>/edit/',
+        views.AppUserUpdateAPIView.as_view(),
+        name='app_user_edit'
     ),
 
 ]

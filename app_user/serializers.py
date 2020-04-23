@@ -13,9 +13,9 @@ class AppUserSerializers(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = [
+            'id',
             'email',
             'firebase_id',
-            'uuid',
             'image',
             'firebase_token',
             'created_at'
@@ -28,8 +28,8 @@ class AppUserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppUser
         fields = [
+            'id',
             'email',
-            'uuid',
             'firebase_id',
             'image',
             'firebase_token',

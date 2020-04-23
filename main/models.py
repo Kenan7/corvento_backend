@@ -31,7 +31,7 @@ class Event(TimeStampedModel):
     ordering = ['date']
 
     def __str__(self):
-        return f"{self.author.first_name} - {self.title}"
+        return f"{self.author.email} - {self.title}"
 
 
 class Category(models.Model):

@@ -1,6 +1,6 @@
 from versatileimagefield.fields import VersatileImageField
 from django.db import models
-import uuid as uuid_lib
+# import uuid as uuid_lib
 # apps
 from main.utils import TimeStampedModel
 
@@ -8,12 +8,12 @@ from main.utils import TimeStampedModel
 class AppUser(TimeStampedModel):
     slug = models.SlugField(unique=True, blank=True, null=True)
 
-    uuid = models.UUIDField(
-        primary_key=True,
-        default=uuid_lib.uuid4,
-        editable=False
-    )
-    firebase_id = models.CharField(max_length=120)
+    # uuid = models.UUIDField(
+    #     primary_key=True,
+    #     default=uuid_lib.uuid4,
+    #     editable=False
+    # )
+    firebase_id = models.CharField(max_length=120, null=True, blank=True)
 
     email = models.EmailField(('email address'), unique=True)
     image = VersatileImageField(
@@ -29,7 +29,7 @@ class AppUser(TimeStampedModel):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return f"{self.email} - {self.uuid}"
+        return f"{self.email} - {self.firebase_id}"
 
 
 class UserNotifications(models.Model):
