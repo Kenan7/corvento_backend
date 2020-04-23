@@ -3,9 +3,7 @@ from versatileimagefield.fields import VersatileImageField
 from django.conf import settings
 from main.utils import unique_slug_generator, TimeStampedModel
 from django.db.models.signals import pre_save
-
-
-User = settings.AUTH_USER_MODEL
+from app_user.models import AppUser
 
 
 class EventManager(models.Manager):
@@ -14,7 +12,7 @@ class EventManager(models.Manager):
 
 
 class Event(TimeStampedModel):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(AppUser, on_delete=models.CASCADE)
     title = models.CharField(max_length=128)
     desc = models.CharField(max_length=1024)
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
@@ -27,8 +25,6 @@ class Event(TimeStampedModel):
     slug = models.SlugField(unique=True, blank=True)
     featured = models.BooleanField()
     community = models.CharField(max_length=20, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
 
     objects = EventManager()
 

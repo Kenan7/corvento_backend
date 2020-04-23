@@ -19,7 +19,6 @@ class CustomAppUserChangeForm(UserChangeForm):
         model = AppUser
         fields = [
             'email',
-            'first_name',
             'image',
             'firebase_token',
             'notifications'

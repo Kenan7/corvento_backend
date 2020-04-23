@@ -9,7 +9,7 @@ class AppUserAdmin(admin.ModelAdmin):
     # add_form = CustomAppUserCreationForm
     form = CustomAppUserChangeForm
     # form = CustomModelForm
-    list_display = ("email", "first_name", "is_superuser")
-    search_fields = ("first_name", "email")
+    list_display = ("email",)
+    search_fields = ("email",)
     ordering = ("created_at",)
     exclude = ['groups', 'user_permissions']
