@@ -50,7 +50,7 @@ STATIC_URL = '/static/'
 
 
 DEBUG = True
-ALLOWED_HOSTS = ['35.157.172.14', '127.0.0.1']
+ALLOWED_HOSTS = ['corvento.com', '18.156.183.172', '127.0.0.1']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1

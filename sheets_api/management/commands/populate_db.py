@@ -7,7 +7,7 @@ from sheets_api.utils import (
 )
 from django.core.management.base import BaseCommand
 from main.models import Event, Category
-import sys
+# import sys
 from dateutil.parser import parse
 from app_user.models import AppUser
 
@@ -15,8 +15,8 @@ from app_user.models import AppUser
 class Command(BaseCommand):
 
     def _create_events(self):
-        sys.path.append('/home/kenan/django/event_project/')
-        user = AppUser.objects.get(uuid="c4f6c2da-5617-476a-a00a-a3a2779de46c")
+        # sys.path.append('/home/kenan/django/event_project/')
+        user = AppUser.objects.get(email="test@g.co")
         category = Category.objects.get(id=1)
         values = get_sheets_data()
         index = get_last_index()
@@ -27,10 +27,7 @@ class Command(BaseCommand):
                 hour_minute = parse_hour(values[row][4])
             hour = int(hour_minute[0])
             minute = int(hour_minute[1])
-            # if minute == '0':
-            #     minute = 00
-            # hour = hour_minute[0]
-            # minute = hour_minute[1]
+
             print(type(hour))
             print(type(minute))
             Event.objects.create(

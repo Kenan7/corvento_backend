@@ -29,7 +29,6 @@ class AppUserManager(UserManager):
     def create_superuser(self, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('gender', 2)
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
@@ -40,12 +39,6 @@ class AppUserManager(UserManager):
 
 
 class AppUser(AbstractUser, TimeStampedModel):
-    GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('NON', 'Prefer Not to Say')
-    )
-
     slug = models.SlugField(unique=True, blank=True, null=True)
 
     uuid = models.UUIDField(
@@ -54,7 +47,6 @@ class AppUser(AbstractUser, TimeStampedModel):
         editable=False)
 
     email = models.EmailField(('email address'), unique=True)
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=4)
     image = VersatileImageField(
         upload_to="user_images", blank=True
     )

@@ -1,5 +1,4 @@
-# from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-# from app_user.models import AppUser
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 # class CustomAppUserCreationForm(UserCreationForm):
@@ -9,17 +8,22 @@
 #                   'last_name', 'gender')
 
 
-# class CustomAppUserChangeForm(UserChangeForm):
-#     class Meta:
-#         model = AppUser
-#         fields = UserChangeForm.Meta.fields
-
 from django.forms import ModelForm
-
-from versatileimagefield.fields import SizedImageCenterpointClickDjangoAdminField
-from versatileimagefield.forms import VersatileImageFormField
-
 from .models import AppUser
+from versatileimagefield.forms import VersatileImageFormField
+from versatileimagefield.fields import SizedImageCenterpointClickDjangoAdminField
+
+
+class CustomAppUserChangeForm(UserChangeForm):
+    class Meta:
+        model = AppUser
+        fields = [
+            'email',
+            'first_name',
+            'image',
+            'firebase_token',
+            'notifications'
+        ]
 
 
 class CustomModelForm(VersatileImageFormField):
