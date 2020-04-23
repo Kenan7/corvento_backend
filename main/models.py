@@ -4,6 +4,7 @@ from django.conf import settings
 from main.utils import unique_slug_generator, TimeStampedModel
 from django.db.models.signals import pre_save
 
+
 User = settings.AUTH_USER_MODEL
 
 

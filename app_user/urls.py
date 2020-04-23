@@ -1,4 +1,4 @@
-from django.urls import path, re_path, include
+from django.urls import path
 from app_user import views
 from rest_framework_simplejwt import views as jwt_views
 

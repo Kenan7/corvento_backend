@@ -1,10 +1,9 @@
-from django.contrib.auth.models import User, AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, UserManager
 from versatileimagefield.fields import VersatileImageField
 from django.db import models
 import uuid as uuid_lib
 # apps
 from main.utils import TimeStampedModel
-from django.utils import timezone
 
 
 class AppUserManager(UserManager):
@@ -63,7 +62,6 @@ class AppUser(AbstractUser, TimeStampedModel):
     notifications = models.ForeignKey(
         "UserNotifications", on_delete=models.CASCADE, null=True, blank=True
     )
-    community = models.CharField(max_length=20, null=True, blank=True)
 
     firebase_token = models.CharField(max_length=64, null=True, blank=True)
 
