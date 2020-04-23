@@ -33,6 +33,5 @@ class EventALLSerializer(serializers.ModelSerializer):
             'author',
             'featured',
             'event_url',
-            'firebase_token',
             'community'
         ]
