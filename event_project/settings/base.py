@@ -44,15 +44,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = BASE_DIR / 'static'
-# STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 STATIC_URL = '/static/'
-
+HOME_TEMPLATE = BASE_DIR / 'templates' / 'main'
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 DEBUG = True
-ALLOWED_HOSTS = ['corvento.com', '18.156.183.172', '127.0.0.1']
+ALLOWED_HOSTS = [
+    'corvento.com',
+    'www.corvento.com',
+    '18.156.183.172',
+    '127.0.0.1',
+]
 
 SITE_ID = 1
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -88,7 +96,7 @@ ROOT_URLCONF = 'event_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [HOME_TEMPLATE],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
