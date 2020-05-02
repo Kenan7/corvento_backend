@@ -12,6 +12,11 @@ from main.serializers import (
     EventCreateSerializer, CategorySerializer, EventALLSerializer
 )
 from rest_framework import filters
+from django.views.generic import TemplateView
+
+
+class Home(TemplateView):
+    template_name = 'index.html'
 
 
 class EventListView(ListAPIView):
