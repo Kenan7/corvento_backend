@@ -1,5 +1,5 @@
 from django.contrib import admin
-from app_user.models import AppUser
+from app_user.models import AppUser, ContactForm, UserNotifications
 from app_user.forms import CustomAppUserChangeForm
 # from app_user.forms import CustomModelForm
 
@@ -12,4 +12,8 @@ class AppUserAdmin(admin.ModelAdmin):
     list_display = ("email",)
     search_fields = ("email",)
     ordering = ("created_at",)
-    exclude = ['groups', 'user_permissions']
+    # exclude = ['groups', 'user_permissions']
+
+
+admin.site.register(ContactForm)
+admin.site.register(UserNotifications)

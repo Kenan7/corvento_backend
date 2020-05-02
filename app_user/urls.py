@@ -15,12 +15,12 @@ urlpatterns = [
         name='app_user_create'
     ),
     path(
-        '<int:pk>/detail/',
+        '<slug:firebase_id>/detail/',
         views.AppUserRetrieveAPIView.as_view(),
         name='app_user_detail'
     ),
     path(
-        '<int:pk>/edit/',
+        '<slug:firebase_id>/edit/',
         views.AppUserUpdateAPIView.as_view(),
         name='app_user_edit'
     ),

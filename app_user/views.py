@@ -6,9 +6,12 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
 )
 
-from app_user.models import AppUser
+from app_user.models import AppUser, ContactForm
 from app_user.serializers import (
-    AppUserSerializers,  AppUserDetailsSerializer
+    AppUserSerializers,
+    AppUserDetailsSerializer,
+    ContactFormSerializer,
+    ContactFormALLSerializer
 )
 
 
@@ -26,18 +29,20 @@ class AppUserRetrieveAPIView(RetrieveAPIView):
     queryset = AppUser.objects.all()
     # permission_classes = (IsAuthenticated,)
     serializer_class = AppUserDetailsSerializer
-    lookup_field = 'pk'
+    lookup_field = 'firebase_id'
 
 
 class AppUserUpdateAPIView(UpdateAPIView):
     queryset = AppUser.objects.all()
     # permission_classes = (IsAuthenticated,)
     serializer_class = AppUserDetailsSerializer
-    lookup_field = 'pk'
+    lookup_field = 'firebase_id'
 
 
-class AppUserRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = AppUser.objects.all()
-    # permission_classes = (IsAuthenticated,)
-    serializer_class = AppUserDetailsSerializer
-    lookup_field = 'pk'
+class ContactFormCreateAPIView(CreateAPIView):
+    serializer_class = ContactFormSerializer
+
+
+class ContactFormListAPIView(ListAPIView):
+    queryset = ContactForm.objects.all()
+    serializer_class = ContactFormALLSerializer

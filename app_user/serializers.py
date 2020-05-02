@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from app_user.models import AppUser, UserNotifications
+from app_user.models import (
+    AppUser,
+    UserNotifications,
+    ContactForm
+)
 
 
 class UserNotificationsSerializer(serializers.ModelSerializer):
@@ -37,3 +41,22 @@ class AppUserDetailsSerializer(serializers.ModelSerializer):
             'created_at'
         ]
         read_only_fields = ('email',)
+
+
+class ContactFormALLSerializer(serializers.ModelSerializer):
+    user_id = AppUserDetailsSerializer()
+
+    class Meta:
+        model = ContactForm
+        fields = [
+            'id',
+            'subject',
+            'message',
+            'user_id'
+        ]
+
+
+class ContactFormSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactForm
+        fields = '__all__'
