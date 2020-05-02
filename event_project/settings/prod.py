@@ -10,14 +10,6 @@ with open('secrets.json') as f:
     secrets = json.loads(f.read())
 
 
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = f'Set the {setting} environment variable'
-        raise ImproperlyConfigured(error_msg)
-
-
 sentry_sdk.init(
     dsn=get_secret("SENTRY_URL"),
     integrations=[DjangoIntegration()],
