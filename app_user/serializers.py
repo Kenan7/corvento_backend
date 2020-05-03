@@ -1,15 +1,8 @@
 from rest_framework import serializers
 from app_user.models import (
     AppUser,
-    UserNotifications,
     ContactForm
 )
-
-
-class UserNotificationsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserNotifications
-        fields = '__all__'
 
 
 class AppUserSerializers(serializers.ModelSerializer):
@@ -27,8 +20,6 @@ class AppUserSerializers(serializers.ModelSerializer):
 
 
 class AppUserDetailsSerializer(serializers.ModelSerializer):
-    notifications = UserNotificationsSerializer()
-
     class Meta:
         model = AppUser
         fields = [
@@ -37,7 +28,6 @@ class AppUserDetailsSerializer(serializers.ModelSerializer):
             'firebase_id',
             'image',
             'firebase_token',
-            'notifications',
             'created_at'
         ]
         read_only_fields = ('email',)

@@ -21,7 +21,6 @@ class CustomAppUserChangeForm(UserChangeForm):
             'email',
             'image',
             'firebase_token',
-            'notifications'
         ]
 
 
