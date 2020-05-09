@@ -1,6 +1,18 @@
 from .parse_secret_json import *
 from pathlib import Path
 
+FCM_DJANGO_SETTINGS = {
+    "APP_VERBOSE_NAME": "Firebase Cloud Messaging",
+    # default: _('FCM Django')
+    "FCM_SERVER_KEY": "AAAAU4MYVPc:APA91bFARn1V_sXyhr7Y8GkxfydM_32jvcFJjR0pt6tGxLfhVm10ImIw3S1VoG0eKELf3CcTsxP_ihhn_4V6zGL9YZZQGba2qgx0cq79Gl5r1UXHPCIojmAw3dpPkqPLOQ0dM2GVYy0f",
+    # true if you want to have only one active device per registered user at a time
+    # default: False
+    "ONE_DEVICE_PER_USER": True,
+    # devices to which notifications cannot be sent,
+    # are deleted upon receiving error response from FCM
+    # default: False
+    "DELETE_INACTIVE_DEVICES": False,
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
@@ -18,12 +30,9 @@ THIRD_PARTY = [
     'rest_framework',
     'versatileimagefield',
     'django_filters',
-    'allauth',
-    'allauth.account',
-    'rest_framework_simplejwt',
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
     'rest_framework_swagger',
+    'fcm_django',
+    'tinymce',
 ]
 
 BASE = [
@@ -47,6 +56,8 @@ STATIC_ROOT = BASE_DIR / 'static'
 # STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 STATIC_URL = '/static/'
 HOME_TEMPLATE = BASE_DIR / 'templates' / 'main'
+STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
