@@ -18,3 +18,25 @@ sentry_sdk.init(
     # django.contrib.auth) you may enable sending PII data.
     send_default_pii=True
 )
+
+
+LOG_LOCATION = BASE_DIR / 'logs' / 'test.log'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': LOG_LOCATION,
+        },
+    },
+    'loggers': {
+        'app_user.models': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+
+    },
+}
