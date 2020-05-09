@@ -6,6 +6,9 @@ from fcm_django.models import FCMDevice
 from django.db.models.signals import post_save, post_delete
 from time import sleep
 from django.db.models import Q
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class AppUser(TimeStampedModel):
@@ -53,19 +56,24 @@ class AppUser(TimeStampedModel):
 
 def connect_app_user_to_fcm_device(sender, instance, created, **kwargs):
     if created:
-        print("Signal received. I will try to create fcm device now...")
-        temp_fcm_device = FCMDevice.objects.create(
-            name=instance.email,
-            device_id=instance.firebase_id,
-            registration_id=instance.firebase_token,
-            active=True,  # True for now -- There will be a settings for this.
-            type=u"android",
-        )
-        print("I created the device", temp_fcm_device,
-              "I will try to connect that device to our user now...")
-        instance.fcm_device = temp_fcm_device
-        instance.save()
-        print("yess, I did it!", instance.fcm_device)
+        try:
+            logger.debug(
+                'Signal received. I am trying to create FCMDevice object for your AppUser account...')
+            temp_fcm_device = FCMDevice.objects.create(
+                name=instance.email,
+                device_id=instance.firebase_id,
+                registration_id=instance.firebase_token,
+                # True for now -- There will be a settings for this.
+                active=True,
+                type=u"android",
+            )
+            logger.debug(
+                'I created the device - %s - I will try to connect that device to our user now...', temp_fcm_device)
+            instance.fcm_device = temp_fcm_device
+            instance.save()
+            logger.debug('Instance saved')
+        except:
+            logger.error('Could not create FCMDevice object for user!')
 
 
 def delete_fcm_device_object(sender, instance, **kwargs):
@@ -74,8 +82,9 @@ def delete_fcm_device_object(sender, instance, **kwargs):
             Q(name=instance.email) | Q(device_id=instance.firebase_id)
         )
         temp_dev.delete()
+        logger.debug('Found and deleted -- %s', temp_dev)
     except:
-        print("there is not connected device")
+        logger.debug('there is not connected device')
 
 
 class ContactForm(models.Model):

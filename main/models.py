@@ -12,8 +12,11 @@ from main.signals import (
     event_slug_pre_save_receiver,
     event_send_notification_post_save,
     category_slug_pre_save_receiver,
-    entry_for_firebase
+    enter_notification_to_firestore
 )
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class EventManager(models.Manager):
@@ -89,24 +92,18 @@ class Event(TimeStampedModel):
         try:
             devices = FCMDevice.objects.all()
             try:
-                slug = self.slug
-            except:
-                print("No slug provided")
-            try:
-                event = Event.objects.get(slug=slug)
                 devices.send_message(
                     title="Yeni etkinlik var",
-                    body=event.title
+                    body=self.title
                 )
             except:
-                print("We could not find event this 'slug'")
-            return print(f"Success! Notification for this Event[{event.title} - {event.description}] has been sent!")
+                logger.error('Could not send notification...')
+            logger.debug(
+                f"Success! Notification for this Event[{self.title} - {self.description}] has been sent!")
         except:
-            return print("Unexpected error. Please contact with us")
-        try:
-            entry_for_firebase(self)
-        except:
-            return print("Could not send data to firebase...")
+            logger.error('There is no FCM device...')
+
+        enter_notification_to_firestore(self.title)
 
 
 class Category(models.Model):
