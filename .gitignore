@@ -4,7 +4,6 @@ secrets.json
 eventproject.code-workspace
 media
 static
-staticfiles
 test.json
 sheets_api/credentials.json
 credentials.json:Zone.Identifier
