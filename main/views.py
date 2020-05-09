@@ -13,10 +13,39 @@ from main.serializers import (
 )
 from rest_framework import filters
 from django.views.generic import TemplateView
+from fcm_django.models import FCMDevice
+from django.http import HttpResponse, Http404
+
+
+def send_notification(request, **kwargs):
+    try:
+        devices = FCMDevice.objects.all()
+        try:
+            slug_from_url = kwargs.get("slug")
+        except:
+            HttpResponse("No slug provided")
+        try:
+            event_from_url = Event.objects.get(slug=slug_from_url)
+            title = event_from_url.title
+            body = event_from_url.desc
+            devices.send_message(title=title, body=body)
+        except:
+            Http404("We could not find event this 'slug'")
+        return HttpResponse(f"Success! Notification for this Event[{title} - {body}] has been sent!")
+    except:
+        return HttpResponse("Unexpected error. Please contact with us")
 
 
 class Home(TemplateView):
     template_name = 'index.html'
+
+
+class Policy(TemplateView):
+    template_name = 'policy.html'
+
+
+class Terms(TemplateView):
+    template_name = 'terms.html'
 
 
 class EventListView(ListAPIView):
@@ -24,7 +53,10 @@ class EventListView(ListAPIView):
     serializer_class = EventALLSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = [
-        'author__first_name', 'title', 'desc',
+        'title',
+        'description',
+        'community',
+        'category__name'
     ]
     filterset_fields = ['featured', 'category__id']
 
@@ -34,8 +66,10 @@ class EventFeaturedListView(ListAPIView):
     serializer_class = EventALLSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = [
-        'author__first_name', 'title',
-        'desc', 'category__name'
+        'title',
+        'description',
+        'community',
+        'category__name'
     ]
     filterset_fields = ['featured']
 
