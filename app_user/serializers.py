@@ -42,7 +42,7 @@ class ContactFormALLSerializer(serializers.ModelSerializer):
             'id',
             'subject',
             'message',
-            'user_id'
+            'email',
         ]
 
 

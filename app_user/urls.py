@@ -5,10 +5,6 @@ from app_user import views
 urlpatterns = [
 
     path(
-        'send/',
-        views.send_notifications
-    ),
-    path(
         'list/',
         views.AppUserListAPIView.as_view(),
         name='app_user_list'
@@ -23,10 +19,10 @@ urlpatterns = [
         views.AppUserRetrieveAPIView.as_view(),
         name='app_user_detail'
     ),
-    path(
-        '<slug:firebase_id>/edit/',
-        views.AppUserUpdateAPIView.as_view(),
-        name='app_user_edit'
-    ),
+    # path(
+    #     '<slug:firebase_id>/edit/',
+    #     views.AppUserUpdateAPIView.as_view(),
+    #     name='app_user_edit'
+    # ),
 
 ]

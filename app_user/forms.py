@@ -17,11 +17,7 @@ from versatileimagefield.fields import SizedImageCenterpointClickDjangoAdminFiel
 class CustomAppUserChangeForm(UserChangeForm):
     class Meta:
         model = AppUser
-        fields = [
-            'email',
-            'image',
-            'firebase_token',
-        ]
+        fields = '__all__'
 
 
 class CustomModelForm(VersatileImageFormField):

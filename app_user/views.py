@@ -13,19 +13,6 @@ from app_user.serializers import (
     ContactFormSerializer,
     ContactFormALLSerializer
 )
-from django.utils import timezone
-
-
-def send_notifications(request):
-    # print(notification)
-    notf = {
-        "title": "test title",
-        "data": "test body",
-        "read_date": timezone.now,
-        "date": timezone.now,
-    }
-
-    AppUser.objects.all().update(notifications=notf)
 
 
 class AppUserListAPIView(ListAPIView):
