@@ -100,7 +100,7 @@ class Event(TimeStampedModel):
                 )
             except:
                 print("We could not find event this 'slug'")
-            return print(f"Success! Notification for this Event[{event.title} - {event.desc}] has been sent!")
+            return print(f"Success! Notification for this Event[{event.title} - {event.description}] has been sent!")
         except:
             return print("Unexpected error. Please contact with us")
         try:
