@@ -21,7 +21,8 @@ logger = logging.getLogger(__name__)
 
 class EventManager(models.Manager):
     def get_featured(self):
-        return super(EventManager, self).get_queryset().filter(featured=1)
+        # optimized
+        return super(EventManager, self).get_queryset().select_related("author", "category").filter(date__gt=timezone.now()).filter(featured=1)
 
 
 class Event(TimeStampedModel):
@@ -31,7 +32,7 @@ class Event(TimeStampedModel):
         null=True
     )
 
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=1000)
 
     category = models.ForeignKey(
         "Category",
@@ -44,18 +45,18 @@ class Event(TimeStampedModel):
         blank=True
     )
 
-    venue = models.CharField(max_length=120)
+    venue = models.CharField(max_length=1000)
 
     date = models.DateTimeField()
 
-    event_url = models.URLField(max_length=200)
+    event_url = models.URLField(max_length=1000)
 
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=500)
 
     featured = models.BooleanField()
 
     community = models.CharField(
-        max_length=20,
+        max_length=1000,
         null=True,
         blank=True
     )

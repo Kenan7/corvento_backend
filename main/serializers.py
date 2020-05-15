@@ -17,8 +17,8 @@ class EventCreateSerializer(serializers.ModelSerializer):
 
 
 class EventALLSerializer(serializers.ModelSerializer):
-    author = AppUserDetailsSerializer()
-    category = CategorySerializer()
+    author = AppUserDetailsSerializer(read_only=True)
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Event
