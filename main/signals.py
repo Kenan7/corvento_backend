@@ -53,9 +53,8 @@ def enter_notification_to_firestore(title):
                     .document(user.firebase_id)\
                     .collection(u'notifications')\
                     .add(data)
-                print(doc_ref)
             except:
-                print(f'Error for ---- {user} ----')
+                logger.error(f'Error for ---- {user} ----')
     except IndexError:
         logger.error('Something with the list index')
     except:

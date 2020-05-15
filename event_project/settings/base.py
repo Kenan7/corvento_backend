@@ -36,6 +36,7 @@ THIRD_PARTY = [
 ]
 
 BASE = [
+    'postgres_metrics.apps.PostgresMetrics',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,7 +56,8 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = BASE_DIR / 'static'
 # STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 STATIC_URL = '/static/'
-HOME_TEMPLATE = BASE_DIR / 'templates' / 'main'
+# HOME_TEMPLATE = BASE_DIR / 'templates' / 'main'
+HOME_TEMPLATE = BASE_DIR / 'templates'
 STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 
 STATICFILES_FINDERS = [
@@ -69,7 +71,9 @@ ALLOWED_HOSTS = [
     'www.corvento.com',
     '18.156.183.172',
     '127.0.0.1',
+    # '192.168.248.123'
 ]
+# ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
 

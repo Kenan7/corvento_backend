@@ -15,6 +15,9 @@ from rest_framework import filters
 from django.views.generic import TemplateView
 from fcm_django.models import FCMDevice
 from django.http import HttpResponse, Http404
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.utils import timezone
 
 
 def send_notification(request, **kwargs):
@@ -36,20 +39,29 @@ def send_notification(request, **kwargs):
         return HttpResponse("Unexpected error. Please contact with us")
 
 
+class Testt(TemplateView):
+    template_name = 'test/index.html'
+
+
 class Home(TemplateView):
-    template_name = 'index.html'
+    template_name = 'main/index.html'
 
 
 class Policy(TemplateView):
-    template_name = 'policy.html'
+    template_name = 'main/policy.html'
 
 
 class Terms(TemplateView):
-    template_name = 'terms.html'
+    template_name = 'main/terms.html'
 
 
+# @method_decorator(cache_page(60*60*2))
 class EventListView(ListAPIView):
-    queryset = Event.objects.all()
+    # queryset = Event.objects.all()
+    #                                                                       Optimized from 33 queries to 3 query
+    #                                                                       ~1800ms query --- > ~650ms
+    queryset = Event.objects.select_related(
+        "category", "author").filter(date__gt=timezone.now())
     serializer_class = EventALLSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = [
@@ -59,6 +71,10 @@ class EventListView(ListAPIView):
         'category__name'
     ]
     filterset_fields = ['featured', 'category__id']
+
+    @method_decorator(cache_page(60*60*2))  # cache for 2 hours
+    def dispatch(self, *args, **kwargs):
+        return super(EventListView, self).dispatch(*args, **kwargs)
 
 
 class EventFeaturedListView(ListAPIView):
@@ -72,6 +88,10 @@ class EventFeaturedListView(ListAPIView):
         'category__name'
     ]
     filterset_fields = ['featured']
+
+    @method_decorator(cache_page(60*60))  # cache for one hour
+    def dispatch(self, *args, **kwargs):
+        return super(EventFeaturedListView, self).dispatch(*args, **kwargs)
 
 
 class EventCreateView(CreateAPIView):
