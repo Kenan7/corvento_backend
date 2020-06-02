@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="zxx" class="no-js">
+<html lang="en">
 
 <head>
 	<!-- Mobile Specific Meta -->
@@ -33,15 +33,17 @@
 </head>
 
 <body>
-    {% block main %}
-    {% endblock main %}
-	
+	{% block main %}
+	{% endblock main %}
+
 	<script src="{% static "js/vendor/jquery-2.2.4.min.js" %}"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-	 crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+	</script>
 	<script src="{% static "js/tilt.jquery.min.js" %}"></script>
 	<script src="{% static "js/vendor/bootstrap.min.js" %}"></script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
+	<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
 	<script src="{% static "js/easing.min.js" %}"></script>
 	<script src="{% static "js/hoverIntent.js" %}"></script>
 	<script src="{% static "js/superfish.min.js" %}"></script>
@@ -54,6 +56,7 @@
 	<script src="{% static "js/waypoints.min.js" %}"></script>
 	<script src="{% static "js/mail-script.js" %}"></script>
 	<script src="{% static "js/main.js" %}"></script>
-    
+
 </body>
+
 </html>
