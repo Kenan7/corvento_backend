@@ -9,7 +9,6 @@ from main import views as main_views
 
 
 urlpatterns = [
-    path('test', main_views.Testt.as_view()),
     path('admin/postgres-metrics/', include('postgres_metrics.urls')),
     path('admin/', admin.site.urls),
     path('', main_views.Home.as_view(), name='home'),
