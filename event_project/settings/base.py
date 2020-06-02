@@ -69,7 +69,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'corvento.com',
     'www.corvento.com',
-    '18.156.183.172',
+    '35.246.172.6',
     '127.0.0.1',
     # '192.168.248.123'
 ]
