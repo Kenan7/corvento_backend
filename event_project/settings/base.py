@@ -1,4 +1,4 @@
-from .parse_secret_json import *
+import os
 from pathlib import Path
 
 FCM_DJANGO_SETTINGS = {
@@ -94,6 +94,22 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("SQL_USER", "postgres"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "postgres"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
+    }
+}
+
+
+SECRET_KEY = os.environ.get("SECRET_KEY", "foo")
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
 
 MIDDLEWARE = [
