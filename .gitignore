@@ -1,7 +1,7 @@
 # custom
-secrets.json
+*secret*.json
 .vscode/
-eventproject.code-workspace
+*.code-workspace
 media
 static
 test.json

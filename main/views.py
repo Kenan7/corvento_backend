@@ -39,8 +39,8 @@ def send_notification(request, **kwargs):
         return HttpResponse("Unexpected error. Please contact with us")
 
 
-class Testt(TemplateView):
-    template_name = 'test/index.html'
+# class Testt(TemplateView):
+#     template_name = 'test/index.html'
 
 
 class Home(TemplateView):
@@ -55,13 +55,16 @@ class Terms(TemplateView):
     template_name = 'main/terms.html'
 
 
-# @method_decorator(cache_page(60*60*2))
 class EventListView(ListAPIView):
     # queryset = Event.objects.all()
     #                                                                       Optimized from 33 queries to 3 query
     #                                                                       ~1800ms query --- > ~650ms
     queryset = Event.objects.select_related(
-        "category", "author").filter(date__gt=timezone.now())
+        "category", "author"
+    ) \
+        .filter(date__gt=timezone.now()) \
+        .filter(featured=0) \
+        .order_by('date')
     serializer_class = EventALLSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = [
@@ -75,6 +78,10 @@ class EventListView(ListAPIView):
     @method_decorator(cache_page(60*60*2))  # cache for 2 hours
     def dispatch(self, *args, **kwargs):
         return super(EventListView, self).dispatch(*args, **kwargs)
+
+    # def filter_queryset(self, queryset):
+    #     queryset = super(EventListView, self).filter_queryset(queryset)
+    #     return queryset
 
 
 class EventFeaturedListView(ListAPIView):
@@ -92,6 +99,10 @@ class EventFeaturedListView(ListAPIView):
     @method_decorator(cache_page(60*60))  # cache for one hour
     def dispatch(self, *args, **kwargs):
         return super(EventFeaturedListView, self).dispatch(*args, **kwargs)
+
+    def filter_queryset(self, queryset):
+        queryset = super(EventFeaturedListView, self).filter_queryset(queryset)
+        return queryset.order_by('date')
 
 
 class EventCreateView(CreateAPIView):

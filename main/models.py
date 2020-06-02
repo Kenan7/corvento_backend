@@ -83,7 +83,7 @@ class Event(TimeStampedModel):
 
     objects = EventManager()
 
-    ordering = ['date']
+    # ordering = ['-date']
 
     def __str__(self):
         # return f"{self.author.email} - {self.title}"
