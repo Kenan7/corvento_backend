@@ -3,6 +3,7 @@ version: "3.7"
 services:
   web:
     build: ./
+    dockerfile: Dockerfile.prod
     command: gunicorn event_project.wsgi:application --bind 0.0.0.0:8000
     ports:
       - 8000:8000
