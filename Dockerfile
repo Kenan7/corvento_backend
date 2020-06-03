@@ -23,7 +23,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 
 # install dependencies
-RUN pip install --upgrade pip
+######### easier this way believe me ##############
+RUN pip install --upgrade pip 
 RUN pip install django \
     cython \
     django-debug-toolbar \ 
@@ -45,6 +46,11 @@ RUN pip install django \
     firebase-admin \
     grpcio
 
+# copy entrypoint.sh
+COPY ./entryp.prod.sh /usr/src/app/entryp.prod.sh
 
 # copy project
 COPY . /usr/src/app/
+
+# run entrypoint.sh
+ENTRYPOINT ["/usr/src/app/entryp.prod.sh"]

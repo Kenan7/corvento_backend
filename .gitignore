@@ -1,5 +1,6 @@
 # custom
 .env.prod
+.env.prod.db
 *secret*.json
 .vscode/
 *.code-workspace
