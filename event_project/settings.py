@@ -1,3 +1,5 @@
+from sentry_sdk.integrations.django import DjangoIntegration
+import sentry_sdk
 import os
 from pathlib import Path
 
@@ -48,7 +50,7 @@ BASE = [
 
 INSTALLED_APPS = BASE + LOCAL + THIRD_PARTY
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -69,11 +71,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'corvento.com',
     'www.corvento.com',
-    '35.246.172.6',
     '127.0.0.1',
-    # '192.168.248.123'
 ]
-# ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
 
@@ -148,3 +147,68 @@ TIME_ZONE = 'Europe/Istanbul'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+if DEBUG:
+    ALLOWED_HOSTS += ['*']
+
+    INSTALLED_APPS += [
+        'debug_toolbar',
+    ]
+
+    MIDDLEWARE += [
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ]
+
+    INTERNAL_IPS = ['127.0.0.1']
+
+    LOG_LOCATION = BASE_DIR / 'logs' / 'test.log'
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'filename': LOG_LOCATION,
+            },
+        },
+        'loggers': {
+            'app_user.models': {
+                'handlers': ['file'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+
+        },
+    }
+
+else:
+    sentry_sdk.init(
+        dsn=os.environ.get("SENTRY_URL"),
+        integrations=[DjangoIntegration()],
+
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True
+    )
+
+    LOG_LOCATION = BASE_DIR / 'logs' / 'test.log'
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'file': {
+                'level': 'ERROR',
+                'class': 'logging.FileHandler',
+                'filename': LOG_LOCATION,
+            },
+        },
+        'loggers': {
+            'app_user.models': {
+                'handlers': ['file'],
+                'level': 'ERROR',
+                'propagate': True,
+            },
+
+        },
+    }
