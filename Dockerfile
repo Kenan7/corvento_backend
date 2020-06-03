@@ -27,6 +27,7 @@ COPY . /usr/src/app/
 ######### easier this way believe me ##############
 RUN pip install --upgrade pip 
 RUN pip wheel \
+    --no-cache-dir \
     --wheel-dir /usr/src/app/wheels \
     django \
     cython \
@@ -38,7 +39,7 @@ RUN pip wheel \
     django-filter  \
     django_allauth \
     markdown  \
-    python-magic \
+    python-magic-debian-bin \
     django-versatileimagefield  \
     sentry-sdk  \
     django-rest-swagger \
@@ -75,8 +76,6 @@ COPY --from=builder /usr/src/app/wheels /wheels
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
-# copy entrypoint-prod.sh
-COPY ./entryp.prod.sh $APP_HOME
 
 # copy project
 COPY . $APP_HOME
@@ -87,6 +86,3 @@ RUN chown -R app:app $APP_HOME
 # change to the app user
 USER app
 
-RUN chmod +x /home/app/web/entryp.prod.sh
-# run entrypoint.prod.sh
-ENTRYPOINT ["/home/app/web/entryp.prod.sh"]
