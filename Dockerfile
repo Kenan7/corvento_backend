@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.8-slim-buster
+FROM python:3.8-slim-buster as builder
 
 # set work directory
 WORKDIR /usr/src/app
@@ -21,11 +21,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+COPY . /usr/src/app/
 
 # install dependencies
 ######### easier this way believe me ##############
 RUN pip install --upgrade pip 
-RUN pip install django \
+RUN pip wheel \
+    --wheel-dir /usr/src/app/wheels \
+    django \
     cython \
     django-debug-toolbar \ 
     djangorestframework \
@@ -46,11 +49,44 @@ RUN pip install django \
     firebase-admin \
     grpcio
 
-# copy entrypoint.sh
-COPY ./entryp.prod.sh /usr/src/app/entryp.prod.sh
+
+
+#########
+# FINAL #
+#########
+
+# pull official base image
+FROM python:3.8-slim-buster
+
+# create directory for the app user
+RUN mkdir -p /home/app
+
+# create the app user
+RUN  groupadd --gid 10001 app && \
+    useradd --gid 10001 --uid 10001 --home-dir /app app
+
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
+WORKDIR $APP_HOME
+
+COPY --from=builder /usr/src/app/wheels /wheels
+RUN pip install --upgrade pip
+RUN pip install --no-cache /wheels/*
+
+# copy entrypoint-prod.sh
+COPY ./entryp.prod.sh $APP_HOME
 
 # copy project
-COPY . /usr/src/app/
+COPY . $APP_HOME
 
-# run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entryp.prod.sh"]
+# chown all the files to the app user
+RUN chown -R app:app $APP_HOME
+
+# change to the app user
+USER app
+
+RUN chmod +x /home/app/web/entryp.prod.sh
+# run entrypoint.prod.sh
+ENTRYPOINT ["/home/app/web/entryp.prod.sh"]
