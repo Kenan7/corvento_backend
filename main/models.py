@@ -5,7 +5,7 @@ from main.utils import TimeStampedModel
 from django.db.models.signals import pre_save, post_save
 from app_user.models import AppUser
 from fcm_django.models import FCMDevice
-from tinymce import HTMLField
+from tinymce.models import HTMLField
 from google.cloud import firestore
 from django.utils import timezone
 from main.signals import (
