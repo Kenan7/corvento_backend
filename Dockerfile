@@ -76,6 +76,8 @@ COPY --from=builder /usr/src/app/wheels /wheels
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
+# copy entrypoint-prod.sh
+COPY ./entryp.prod.sh $APP_HOME
 
 # copy project
 COPY . $APP_HOME
@@ -86,3 +88,6 @@ RUN chown -R app:app $APP_HOME
 # change to the app user
 USER app
 
+RUN chmod +x /home/app/web/entryp.prod.sh
+# run entrypoint.prod.sh
+ENTRYPOINT ["/home/app/web/entryp.prod.sh"]
