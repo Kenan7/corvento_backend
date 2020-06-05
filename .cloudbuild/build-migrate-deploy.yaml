@@ -1,0 +1,30 @@
+steps:
+    - id: 'build  '
+      name: 'gcr.io/cloud-builders/docker'
+      args: ['build', '-t', 'gcr.io/steam-talent-277511/corvento-service', '.']
+
+    - id: 'push   '
+      name: 'gcr.io/cloud-builders/docker'
+      args: ['push', 'gcr.io/steam-talent-277511/corvento-service']
+      
+    - id: 'migrate'
+      name: 'gcr.io/google-appengine/exec-wrapper'
+      args: ['-i', 'gcr.io/steam-talent-277511/corvento-service',
+             '-s', 'steam-talent-277511:europe-west3:corvento-postgres',
+             '-e', 'PROJECT_ID=steam-talent-277511',
+             '--', 'sh', '.cloudbuild/django_migrate.sh']
+
+    - id: 'deploy'
+      name: 'gcr.io/cloud-builders/gcloud'
+      args: ["run", "deploy", "corvento-service", 
+            "--platform", "managed", 
+            "--region", "europe-west4",
+            "--image", "gcr.io/steam-talent-277511/corvento-service"]
+
+# substitutions:
+#   _REGION: (the region)
+#   _INSTANCE_NAME: (just the name, PROJECT_ID:REGION:INSTANCE_NAME)
+#   _SERVICE: (the cloud run service)
+#
+# Automatically provided:
+#   PROJECT_ID: (the project)

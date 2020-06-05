@@ -57,10 +57,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = BASE_DIR / 'static'
 # STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+STATIC_URL = 'https://storage.googleapis.com/steam-talent-277511.appspot.com/static/'
 # HOME_TEMPLATE = BASE_DIR / 'templates' / 'main'
 HOME_TEMPLATE = BASE_DIR / 'templates'
-STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+# STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -72,6 +73,8 @@ ALLOWED_HOSTS = [
     'corvento.com',
     'www.corvento.com',
     '127.0.0.1',
+    'https://corvento-service-di7ha4uelq-ez.a.run.app',
+    'corvento-service-di7ha4uelq-ez.a.run.app',
 ]
 
 SITE_ID = 1
