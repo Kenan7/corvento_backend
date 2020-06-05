@@ -1,21 +1,20 @@
 #!/bin/sh
 
-echo "✨ migrate"
-python manage.py migrate --no-input
+if [ "$DATABASE" = "postgres" ]
+then
+    echo "Waiting for postgres..."
 
-echo "🎅 collectstatic"
-python manage.py collectstatic --no-input
+    while ! nc -z $SQL_HOST $SQL_PORT; do
+      sleep 0.1
+    done
 
+    echo "PostgreSQL started"
 
-# if [ "$DATABASE" = "postgres" ]
-# then
-#     echo "Waiting for postgres..."
+    echo "✨ migrate"
+    python manage.py migrate --no-input
 
-#     while ! nc -z $SQL_HOST $SQL_PORT; do
-#       sleep 0.1
-#     done
+    echo "🎅 collectstatic"
+    python manage.py collectstatic --no-input
+fi
 
-#     echo "PostgreSQL started"
-# fi
-
-# exec "$@"
+exec "$@"

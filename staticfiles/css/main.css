@@ -2354,7 +2354,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 ################
 */
 .blog-banner-area {
-  background: url(../img/elements/blog/blog-banner.jpg) center;
   background-size: cover; }
   .blog-banner-area .overlay-bg {
     background: rgba(0, 0, 0, 0.55); }

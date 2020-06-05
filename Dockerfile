@@ -48,8 +48,7 @@ RUN pip wheel \
     django-tinymce \
     psycopg2-binary \
     firebase-admin \
-    grpcio \
-    django-environ
+    grpcio
 
 
 
@@ -70,11 +69,15 @@ RUN  groupadd --gid 10001 app && \
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
 WORKDIR $APP_HOME
 
 COPY --from=builder /usr/src/app/wheels /wheels
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
+
+# copy entrypoint-prod.sh
+COPY ./entryp.prod.sh $APP_HOME
 
 # copy project
 COPY . $APP_HOME
@@ -85,4 +88,6 @@ RUN chown -R app:app $APP_HOME
 # change to the app user
 USER app
 
-CMD gunicorn event_project.wsgi:application --bind 0.0.0.0:8080
+RUN chmod +x /home/app/web/entryp.prod.sh
+# run entrypoint.prod.sh
+ENTRYPOINT ["/home/app/web/entryp.prod.sh"]

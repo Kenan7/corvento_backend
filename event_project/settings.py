@@ -2,6 +2,16 @@ from sentry_sdk.integrations.django import DjangoIntegration
 import sentry_sdk
 import os
 from pathlib import Path
+import json
+import pprint
+import environ
+import logging
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+OS_BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+logger = logging.getLogger(__name__)
+environ.Env.read_env(env_file=os.path.join(OS_BASE_DIR, '.env'))
+env = environ.Env()
 
 FCM_DJANGO_SETTINGS = {
     "APP_VERBOSE_NAME": "Firebase Cloud Messaging",
@@ -50,25 +60,22 @@ BASE = [
 
 INSTALLED_APPS = BASE + LOCAL + THIRD_PARTY
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = BASE_DIR / 'static'
-# STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
-# STATIC_URL = '/static/'
-STATIC_URL = 'https://storage.googleapis.com/steam-talent-277511.appspot.com/static/'
+STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
+STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATIC_URL = 'https://storage.googleapis.com/steam-talent-277511.appspot.com/static/'
 # HOME_TEMPLATE = BASE_DIR / 'templates' / 'main'
 HOME_TEMPLATE = BASE_DIR / 'templates'
-# STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-DEBUG = True
 ALLOWED_HOSTS = [
     'corvento.com',
     'www.corvento.com',
@@ -100,22 +107,24 @@ SWAGGER_SETTINGS = {
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": os.environ.get("SQL_USER", "postgres"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "postgres"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": os.environ.get("SQL_PORT", "5432"),
+        "ENGINE": env.str("SQL_ENGINE", default="django.db.backends.sqlite3"),
+        "NAME": env.str("SQL_DATABASE", default=os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": env.str("SQL_USER", default="postgres"),
+        "PASSWORD": env.str("SQL_PASSWORD", default="postgres"),
+        "HOST": env.str("/cloudsql/steam-talent-277511:europe-west3:corvento-postgres", default="localhost"),
+        "PORT": env.int("SQL_PORT", default="5432"),
     }
 }
+logger.info(pprint.pprint(DATABASES))
 
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "foo")
-DEBUG = int(os.environ.get("DEBUG", default=0))
+SECRET_KEY = env.str("SECRET_KEY", default="foo")
+DEBUG = int(env.bool("DEBUG", default=0))
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -187,7 +196,7 @@ if DEBUG:
 
 else:
     sentry_sdk.init(
-        dsn=os.environ.get("SENTRY_URL"),
+        dsn=env("SENTRY_URL"),
         integrations=[DjangoIntegration()],
 
         # If you wish to associate users to errors (assuming you are using
