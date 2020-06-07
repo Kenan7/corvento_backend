@@ -186,7 +186,7 @@ if DEBUG:
         },
         'loggers': {
             'django': {
-                'handlers': ['console'],
+                'handlers': ['file'],
                 'level': 'DEBUG',
                 'propagate': False,
             },

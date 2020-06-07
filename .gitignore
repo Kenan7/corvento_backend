@@ -1,4 +1,6 @@
 # custom
+.env
+.env.dev
 .env.prod
 .env.prod.db
 *secret*.json
@@ -8,8 +10,7 @@ media
 static
 test.json
 sheets_api/credentials.json
-credentials.json:Zone.Identifier
-token.pickle
+*.pickle
 secret.json
 *.Identifier
 data.json
@@ -123,7 +124,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+
 .venv
 env/
 venv/
