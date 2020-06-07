@@ -1,24 +1,34 @@
-version: "3"
+version: "3.7"
 
 services:
   web:
+    container_name: dj
     build: ./
-    command: gunicorn event_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static_volume:/home/app/web/static
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
     env_file:
       - ./.env.prod
+    networks:
+      - backend
+      - frontend
 
   nginx:
+    container_name: ng
     build: ./nginx
     volumes:
       - static_volume:/home/app/web/static
     ports:
-      - 8000:80
+      - 80:80
     depends_on:
       - web
+    networks:
+      - frontend
 
 volumes:
   static_volume:
+
+networks:
+  backend:
+  frontend:

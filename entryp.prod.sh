@@ -15,6 +15,8 @@ then
 
     echo "🎅 collectstatic"
     python manage.py collectstatic --no-input
+
+    gunicorn event_project.wsgi:application --bind 0.0.0.0:8000
 fi
 
 exec "$@"

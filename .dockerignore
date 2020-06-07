@@ -1,6 +1,5 @@
 media
 static
-staticfiles
 *.Identifier
 **/.git
 

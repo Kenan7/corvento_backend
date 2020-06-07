@@ -3,5 +3,5 @@ steps:
     args: ["build", "-t", "gcr.io/steam-talent-277511/corvento-service", "."]
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/steam-talent-277511/corvento-service"]
-  - name: "docker/compose:1.25.5"
+  - name: "gcr.io/cloud-builders/docker"
     args: ["up", "-d"]

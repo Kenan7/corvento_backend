@@ -4,14 +4,10 @@ import os
 from pathlib import Path
 import json
 import pprint
-import environ
 import logging
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-OS_BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 logger = logging.getLogger(__name__)
-environ.Env.read_env(env_file=os.path.join(OS_BASE_DIR, '.env'))
-env = environ.Env()
 
 FCM_DJANGO_SETTINGS = {
     "APP_VERBOSE_NAME": "Firebase Cloud Messaging",
@@ -62,7 +58,7 @@ INSTALLED_APPS = BASE + LOCAL + THIRD_PARTY
 
 
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
+MEDIA_URL = 'https://storage.googleapis.com/steam-talent-277511-media/'
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 STATIC_URL = '/static/'
@@ -80,8 +76,8 @@ ALLOWED_HOSTS = [
     'corvento.com',
     'www.corvento.com',
     '127.0.0.1',
-    'https://corvento-service-di7ha4uelq-ez.a.run.app',
-    'corvento-service-di7ha4uelq-ez.a.run.app',
+    '172.26.0.2',
+    '35.246.172.6',
 ]
 
 SITE_ID = 1
@@ -107,19 +103,19 @@ SWAGGER_SETTINGS = {
 
 DATABASES = {
     "default": {
-        "ENGINE": env.str("SQL_ENGINE", default="django.db.backends.sqlite3"),
-        "NAME": env.str("SQL_DATABASE", default=os.path.join(BASE_DIR, "db.sqlite3")),
-        "USER": env.str("SQL_USER", default="postgres"),
-        "PASSWORD": env.str("SQL_PASSWORD", default="postgres"),
-        "HOST": env.str("/cloudsql/steam-talent-277511:europe-west3:corvento-postgres", default="localhost"),
-        "PORT": env.int("SQL_PORT", default="5432"),
+        "ENGINE": os.environ.get("SQL_ENGINE", default="django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", default=os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("SQL_USER", default="postgres"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", default="postgres"),
+        "HOST": os.environ.get("SQL_HOST", default="localhost"),
+        "PORT": os.environ.get("SQL_PORT", default="5432"),
     }
 }
-logger.info(pprint.pprint(DATABASES))
+# logger.info(pprint.pprint(DATABASES))
 
 
-SECRET_KEY = env.str("SECRET_KEY", default="foo")
-DEBUG = int(env.bool("DEBUG", default=0))
+SECRET_KEY = os.environ.get("SECRET_KEY", default="foo")
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
 
 MIDDLEWARE = [
@@ -183,20 +179,25 @@ if DEBUG:
                 'class': 'logging.FileHandler',
                 'filename': LOG_LOCATION,
             },
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+            }
         },
         'loggers': {
-            'app_user.models': {
-                'handlers': ['file'],
+            'django': {
+                'handlers': ['console'],
                 'level': 'DEBUG',
-                'propagate': True,
+                'propagate': False,
             },
 
         },
     }
 
+
 else:
     sentry_sdk.init(
-        dsn=env("SENTRY_URL"),
+        dsn=os.environ.get("SENTRY_URL"),
         integrations=[DjangoIntegration()],
 
         # If you wish to associate users to errors (assuming you are using
@@ -214,12 +215,16 @@ else:
                 'class': 'logging.FileHandler',
                 'filename': LOG_LOCATION,
             },
+            'console': {
+                'level': 'ERROR',
+                'class': 'logging.StreamHandler',
+            }
         },
         'loggers': {
-            'app_user.models': {
-                'handlers': ['file'],
+            'django': {
+                'handlers': ['console'],
                 'level': 'ERROR',
-                'propagate': True,
+                'propagate': False,
             },
 
         },
