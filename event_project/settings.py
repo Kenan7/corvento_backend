@@ -57,14 +57,7 @@ BASE = [
 INSTALLED_APPS = BASE + LOCAL + THIRD_PARTY
 
 
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = 'https://storage.googleapis.com/steam-talent-277511-media/'
-STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
-STATIC_URL = '/static/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATIC_URL = 'https://storage.googleapis.com/steam-talent-277511.appspot.com/static/'
-# HOME_TEMPLATE = BASE_DIR / 'templates' / 'main'
 HOME_TEMPLATE = BASE_DIR / 'templates'
 
 STATICFILES_FINDERS = [
@@ -111,7 +104,6 @@ DATABASES = {
         "PORT": os.environ.get("SQL_PORT", default="5432"),
     }
 }
-# logger.info(pprint.pprint(DATABASES))
 
 
 SECRET_KEY = os.environ.get("SECRET_KEY", default="foo")
@@ -156,6 +148,30 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# if not os.path.exists('logs'):
+#     os.makedirs()
+#     LOG_LOCATION = BASE_DIR / 'logs' / 'test.log'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
+DEFAULT_FILE_STORAGE = 'django_gcloud_storage.DjangoGCloudStorage'
+
+try:
+    GCS_PROJECT = os.environ.get('project_id')
+    GCS_BUCKET = os.environ.get('media_bucket')
+    # GS_STATIC_BUCKET_NAME = os.environ.get('static_bucket')
+
+    GCS_CREDENTIALS_FILE_PATH = "/home/kenan/django_gstorage_key_credentials.json"
+
+    MEDIA_URL = f'https://storage.googleapis.com/{GCS_BUCKET}/'
+    # STATIC_URL = f'https://storage.googleapis.com/{GS_STATIC_BUCKET_NAME}/'
+
+
+except:
+    logger.critical("Couldn't get media & static bucket variables from *env*")
+
+# I will optimize this section
 if DEBUG:
     ALLOWED_HOSTS += ['*']
 
