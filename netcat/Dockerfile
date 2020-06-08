@@ -1,2 +1,0 @@
-FROM subfuzion/netcat:latest
-

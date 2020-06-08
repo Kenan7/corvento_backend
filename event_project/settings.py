@@ -162,7 +162,7 @@ try:
     GCS_BUCKET = os.environ.get('media_bucket')
     # GS_STATIC_BUCKET_NAME = os.environ.get('static_bucket')
 
-    GCS_CREDENTIALS_FILE_PATH = "/home/kenan/django_gstorage_key_credentials.json"
+    GCS_CREDENTIALS_FILE_PATH = BASE_DIR / 'gstorage_credentials.json'
 
     MEDIA_URL = f'https://storage.googleapis.com/{GCS_BUCKET}/'
     # STATIC_URL = f'https://storage.googleapis.com/{GS_STATIC_BUCKET_NAME}/'

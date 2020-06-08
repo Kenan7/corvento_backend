@@ -1,4 +1,5 @@
 # custom
+gstorage_credentials.json
 .env
 .env.dev
 .env.prod
