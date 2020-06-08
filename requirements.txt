@@ -120,7 +120,7 @@ swapper==1.1.2.post1
 systemd-python==234
 termcolor==1.1.0
 tqdm==4.43.0
-Twisted==17.9.0
+Twisted==19.7.0
 ufoLib2==0.4.0
 ufw==0.36
 unattended-upgrades==0.1
