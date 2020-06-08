@@ -2,7 +2,7 @@ asgiref==3.2.7
 autopep8==1.5.3
 CacheControl==0.12.6
 cachetools==4.1.0
-certifi==2020.4.5.1
+certifi==2020.4.5.2
 chardet==3.0.4
 coreapi==2.3.3
 coreschema==0.0.4
