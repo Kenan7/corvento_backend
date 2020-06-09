@@ -32,7 +32,7 @@ COPY ./requirements.txt $APP_HOME
 RUN groupadd --gid 10001 app && \
     useradd --gid 10001 --uid 10001 --home-dir /app app
 
-    # install dependencies
+# install dependencies
 # chown all the files to the app user
 
 RUN pip install --upgrade pip

@@ -2,21 +2,33 @@ version: "3.7"
 
 services:
   web:
+    container_name: dj
     build: ./
-    dockerfile: Dockerfile.prod
-    command: gunicorn event_project.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/app/web/static
     ports:
       - 8000:8000
     env_file:
-      - ./.env.prod
-    depends_on:
-      - db
-  db:
-    image: postgres:12.0-alpine
+      - ./.env.dev
+    networks:
+      - backend
+      - frontend
+
+  nginx:
+    container_name: ng
+    build: ./nginx/dev
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./.env.prod.db
+      - static_volume:/home/app/web/static
+    ports:
+      - 80:80
+    depends_on:
+      - web
+    networks:
+      - frontend
 
 volumes:
-  postgres_data:
+  static_volume:
+
+networks:
+  backend:
+  frontend:

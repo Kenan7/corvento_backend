@@ -1,5 +1,4 @@
 # custom
-gstorage_credentials.json
 .env
 .env.dev
 .env.prod
@@ -10,7 +9,7 @@ gstorage_credentials.json
 media
 static
 test.json
-sheets_api/credentials.json
+*credentials.json
 *.pickle
 secret.json
 *.Identifier
@@ -97,6 +96,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # IPython
 profile_default/

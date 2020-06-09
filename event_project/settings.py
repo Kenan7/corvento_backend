@@ -41,6 +41,7 @@ THIRD_PARTY = [
     'rest_framework_swagger',
     'fcm_django',
     'tinymce',
+    'django_extensions',
 ]
 
 BASE = [
@@ -155,14 +156,25 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
+
 DEFAULT_FILE_STORAGE = 'django_gcloud_storage.DjangoGCloudStorage'
 
+# try:
+#     GOOGLE_CLOUD_CREDENTIALS = BASE_DIR / \
+#         os.environ.get('GOOGLE_APPLICATION_CREDENTIALS',
+#                        'gcloud_storage_fcm_credentials.json')
+# except:
+#     logger.error(f'we can\'t get the credentials file')
+
 try:
+    GCS_CREDENTIALS_FILE_PATH = os.environ.get(
+        'GOOGLE_APPLICATION_CREDENTIALS',
+        default='gcloud_storage_fcm_credentials.json'
+    )
+
     GCS_PROJECT = os.environ.get('project_id')
     GCS_BUCKET = os.environ.get('media_bucket')
     # GS_STATIC_BUCKET_NAME = os.environ.get('static_bucket')
-
-    GCS_CREDENTIALS_FILE_PATH = BASE_DIR / 'gstorage_credentials.json'
 
     MEDIA_URL = f'https://storage.googleapis.com/{GCS_BUCKET}/'
     # STATIC_URL = f'https://storage.googleapis.com/{GS_STATIC_BUCKET_NAME}/'

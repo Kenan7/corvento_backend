@@ -6,13 +6,12 @@ from django.db.models.signals import pre_save, post_save
 from app_user.models import AppUser
 from fcm_django.models import FCMDevice
 from tinymce.models import HTMLField
-from google.cloud import firestore
 from django.utils import timezone
 from main.signals import (
     event_slug_pre_save_receiver,
     event_send_notification_post_save,
     category_slug_pre_save_receiver,
-    enter_notification_to_firestore
+    # enter_notification_to_firestore
 )
 import logging
 
@@ -22,7 +21,27 @@ logger = logging.getLogger(__name__)
 class EventManager(models.Manager):
     def get_featured(self):
         # optimized
-        return super(EventManager, self).get_queryset().select_related("author", "category").filter(date__gt=timezone.now()).filter(featured=1)
+        return super(EventManager, self)\
+            .get_queryset()\
+            .select_related("author", "category")\
+            .filter(date__gt=timezone.now())\
+            .filter(featured=1)\
+            .order_by('-date')
+
+    def get_nonfeatured(self):
+        return super(EventManager, self)\
+            .get_queryset()\
+            .select_related("author", "category")\
+            .filter(date__gt=timezone.now())\
+            .filter(featured=0)\
+            .order_by('-date')
+
+    def all(self):
+        return super(EventManager, self)\
+            .get_queryset()\
+            .select_related("author", "category")\
+            .filter(date__gt=timezone.now())\
+            .order_by('-date')
 
 
 class Event(TimeStampedModel):
@@ -104,7 +123,7 @@ class Event(TimeStampedModel):
         except:
             logger.error('There is no FCM device...')
 
-        enter_notification_to_firestore(self.title)
+        # enter_notification_to_firestore(self.title)
 
 
 class Category(models.Model):

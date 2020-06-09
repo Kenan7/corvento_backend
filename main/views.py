@@ -59,12 +59,7 @@ class EventListView(ListAPIView):
     # queryset = Event.objects.all()
     #                                                                       Optimized from 33 queries to 3 query
     #                                                                       ~1800ms query --- > ~650ms
-    queryset = Event.objects.select_related(
-        "category", "author"
-    ) \
-        .filter(date__gt=timezone.now()) \
-        .filter(featured=0) \
-        .order_by('date')
+    queryset = Event.objects.get_nonfeatured()
     serializer_class = EventALLSerializer
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = [
@@ -99,10 +94,6 @@ class EventFeaturedListView(ListAPIView):
     @method_decorator(cache_page(60*60))  # cache for one hour
     def dispatch(self, *args, **kwargs):
         return super(EventFeaturedListView, self).dispatch(*args, **kwargs)
-
-    def filter_queryset(self, queryset):
-        queryset = super(EventFeaturedListView, self).filter_queryset(queryset)
-        return queryset.order_by('date')
 
 
 class EventCreateView(CreateAPIView):

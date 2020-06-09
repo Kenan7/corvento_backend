@@ -1,65 +1,51 @@
-###########
-# BUILDER #
-###########
-
 # pull official base image
-FROM python:3.8.0-alpine as builder
+FROM python:3.8-slim-buster
 
-# set work directory
-WORKDIR /usr/src/app
+RUN mkdir -p /home/app
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
+        tzdata \
+        python3-setuptools \
+        python3-pip \
+        python3-dev \
+        python3-venv \
+        git \
+        libmagic1 \
+        netcat
 
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt /usr/src/app/requirements.txt
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
-
-
-# copy project
-COPY . /usr/src/app/
-
-
-#########
-# FINAL #
-#########
-
-# pull official base image
-FROM python:3.8.0-alpine
-
-# create directory for the app user
-RUN mkdir -p /home/app
-
-# create the app user
-RUN addgroup -S app && adduser -S app -G app
-
-# create the appropriate directories
-ENV HOME=/home/app
-ENV APP_HOME=/home/app/web
+ENV HOME=/home/app/
+ENV APP_HOME=/home/app/web/
 RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
 WORKDIR $APP_HOME
 
-# install dependencies
-RUN apk update && apk add libpq
-COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache /wheels/*
-
 # copy entrypoint-prod.sh
-COPY ./entrypoint.prod.sh $APP_HOME
+COPY ./entryp.prod.sh $APP_HOME
+COPY ./requirements.txt $APP_HOME
+
+RUN groupadd --gid 10001 app && \
+    useradd --gid 10001 --uid 10001 --home-dir /app app
+
+    # install dependencies
+# chown all the files to the app user
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 # copy project
 COPY . $APP_HOME
 
-# chown all the files to the app user
-RUN chown -R app:app $APP_HOME
+RUN chown -R app:app $APP_HOME && \
+    chmod +x /home/app/web/entryp.prod.sh
 
 # change to the app user
 USER app
+
+# run entrypoint.prod.sh
+ENTRYPOINT ["/home/app/web/entryp.prod.sh"]
