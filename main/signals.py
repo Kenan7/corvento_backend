@@ -2,10 +2,13 @@ from django.conf import settings
 from main.utils import unique_slug_generator, TimeStampedModel
 from django.db.models.signals import pre_save, post_save
 from app_user.models import AppUser
-from google.cloud import firestore
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 from django.utils import timezone
 import os
 import logging
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -29,10 +32,9 @@ def event_send_notification_post_save(sender, instance, created, update_fields, 
 
 def enter_notification_to_firestore(title):
     try:
-        path = "/home/kenan/evento.json"
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = path
         now = timezone.now()
-        list = AppUser.ojects.all()
+        object_list = AppUser.objects.all()
+        user_list = list(object_list)
 
         data = {
             "title": "Yeni Etkinlik var",
@@ -40,15 +42,20 @@ def enter_notification_to_firestore(title):
             "date": now,
             "isRead": 0,
         }
+        logger.error(
+            f"path - {os.environ.get('GOOGLE_CLOUD_CREDENTIALS')}\n users -- {user_list}\n data -- {data}")
     except:
         logger.error('error with google-creds - path - time - appuser object')
 
     try:
+        cred = credentials.Certificate(settings.GOOGLE_CLOUD_CREDENTIALS)
+        firebase_admin.initialize_app(cred)
         db = firestore.Client()
 
-        for i in range(len(list)):
-            user = list[i]
+        for i in range(len(user_list)):
+            user = user_list[i]
             try:
+
                 doc_ref = db.collection(u'users')\
                     .document(user.firebase_id)\
                     .collection(u'notifications')\
