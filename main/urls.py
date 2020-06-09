@@ -13,10 +13,10 @@ urlpatterns = [
     #     'create/',
     #     views.EventCreateView.as_view(), name='events_create'
     # ),
-    path(
-        '<slug:slug>/send/',
-        views.send_notification, name='event_send_notification'
-    ),
+    # path(
+    #     '<slug:slug>/send/',
+    #     views.send_notification, name='event_send_notification'
+    # ),
     path(
         '<slug:slug>/detail/',
         views.EventDetailView.as_view(), name='event_detail'

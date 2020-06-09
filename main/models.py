@@ -36,13 +36,6 @@ class EventManager(models.Manager):
             .filter(featured=0)\
             .order_by('-date')
 
-    def all(self):
-        return super(EventManager, self)\
-            .get_queryset()\
-            .select_related("author", "category")\
-            .filter(date__gt=timezone.now())\
-            .order_by('-date')
-
 
 class Event(TimeStampedModel):
     author = models.ForeignKey(
