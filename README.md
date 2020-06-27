@@ -16,7 +16,6 @@
     </tr>
 
 </table>
-![mobile-app-screenshot](https://github.com/bugragoksu/corvento/blob/master/screenshot/1.png)
 
 ## Models Graph --> Only used apps
 ![custom-models](https://i.imgur.com/gXxI6TJ.png)
