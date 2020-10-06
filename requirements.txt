@@ -29,7 +29,7 @@ djangorestframework==3.11.0
 entrypoints==0.3
 fcm-django==0.3.4
 firebase-admin==4.3.0
-google-api-core==1.19.1
+google-api-core==1.22.4
 google-api-python-client==1.9.1
 google-auth==1.16.1
 google-auth-httplib2==0.0.3
